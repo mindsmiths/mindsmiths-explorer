@@ -5,7 +5,7 @@ const detect = require("detect-port");
 
 export function isForgeRunning(): boolean {
   const stdout = ps
-    .execSync("ps aux | grep -e forge -e target/app -e runserver")
+    .execSync("ps aux | grep -e forge -e target/app -e runserver -e uvicorn")
     .toString();
   const processes = stdout
     .split("\n")
@@ -106,7 +106,7 @@ function buildPortsTooltip(takenPorts: Array<Number>): vscode.MarkdownString {
     const url = process.env.ENV_URL
       ? `http://${port}.${process.env.ENV_URL}`
       : `http://localhost:${port}`;
-    tooltip.value += `<p><a href='${url}'>${url}</a></p>`;
+    tooltip.value += `<p><a href='${url}' target='_blank'>${url}</a></p>`;
   });
   tooltip.value += "</div>";
   return tooltip;

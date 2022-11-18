@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("mindsmiths-explorer.forgeStop", () => {
       if (isForgeRunning()) {
         ps.execSync(
-          "kill $(ps aux | grep -e forge -e target/app -e runserver | awk '{print $2}') &> /dev/null"
+          "kill $(ps aux | grep -e forge -e target/app -e runserver -e uvicorn | awk '{print $2}') &> /dev/null"
         );
         updatePortsStatusBarItem(portsStatusBarItem);
       } else {
@@ -53,7 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
       () => {
         if (isForgeRunning()) {
           ps.execSync(
-            "kill -9 $(ps aux | grep -e forge -e target/app -e runserver | awk '{print $2}') &> /dev/null"
+            "kill -9 $(ps aux | grep -e forge -e target/app -e runserver -e uvicorn | awk '{print $2}') &> /dev/null"
           );
           updatePortsStatusBarItem(portsStatusBarItem);
         } else {

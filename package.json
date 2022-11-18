@@ -2,8 +2,9 @@
   "name": "mindsmiths-explorer",
   "publisher": "mindsmiths",
   "displayName": "Mindsmiths Explorer",
-  "description": "",
-  "version": "0.0.4",
+  "repository": "https://github.com/mindsmiths/mindsmiths-explorer",
+  "description": "Mindsmiths plugin for VS Code and Theia.",
+  "version": "0.0.1",
   "publishConfig": {
     "registry": "https://nexus.vingd.net/repository/npm-packages"
   },
