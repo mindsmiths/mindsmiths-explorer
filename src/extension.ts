@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
         if (created) {
-          setTimeout(() => terminal.sendText("forge run"), 500);
+          setTimeout(() => terminal.sendText("forge run"), 1000);
         } else {
           terminal.sendText("forge run");
         }
@@ -84,7 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
 		if (created) {
-			setTimeout(() => terminal.sendText("forge init"), 500);
+			setTimeout(() => terminal.sendText("forge init"), 1000);
 		} else {
 			terminal.sendText("forge init");
 		}
@@ -100,7 +100,7 @@ export function activate(context: vscode.ExtensionContext) {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
 		if (created) {
-			setTimeout(() => terminal.sendText("forge install"), 500);
+			setTimeout(() => terminal.sendText("forge install"), 1000);
 		} else {
 			terminal.sendText("forge install");
 		}
@@ -116,7 +116,7 @@ export function activate(context: vscode.ExtensionContext) {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
 		if (created) {
-			setTimeout(() => terminal.sendText("forge reset"), 500);
+			setTimeout(() => terminal.sendText("forge reset"), 1000);
 		} else {
 			terminal.sendText("forge reset");
 		}

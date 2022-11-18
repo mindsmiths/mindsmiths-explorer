@@ -3,7 +3,7 @@
   "publisher": "mindsmiths",
   "displayName": "Mindsmiths Explorer",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "publishConfig": {
     "registry": "https://nexus.vingd.net/repository/npm-packages"
   },

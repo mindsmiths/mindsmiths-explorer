@@ -16,20 +16,17 @@ export function isForgeRunning(): boolean {
 export function getMindsmithsTerminal(): [vscode.Terminal, boolean] {
   const terminals = <vscode.Terminal[]>(<any>vscode.window).terminals;
   const mindsmithsTerminals = terminals.filter(
-    (terminal) =>
-      terminal.creationOptions &&
-      "env" in terminal.creationOptions &&
-      terminal.creationOptions.env &&
-      "mindsmiths" in terminal.creationOptions.env
+    (terminal) => terminal.name === "Forge"
   );
   if (mindsmithsTerminals.length > 0) {
     return [mindsmithsTerminals[0], false];
   } else {
-    const profile = new vscode.TerminalProfile({
-      name: "Forge",
-      env: { mindsmiths: "forge-run" },
-    });
-    return [vscode.window.createTerminal(profile.options), true];
+    const terminal = vscode.window.createTerminal("Forge");
+    const workspaceFolder = getMainWorkspace();
+    if (workspaceFolder) {
+      terminal.sendText(`cd ${workspaceFolder.uri.path}`);
+    }
+    return [terminal, true];
   }
 }
 
@@ -51,14 +48,14 @@ export async function updatePortsStatusBarItem(
           takenPorts.sort();
         }
         if (takenPorts.length > 0) {
-            item.text = "Ports: " + takenPorts.join(", ");
-            const oldTooltip = item.tooltip;
-            item.tooltip = buildPortsTooltip(takenPorts);
-            if (oldTooltip !== item.tooltip) {
-            }
+          item.text = "Ports: " + takenPorts.join(", ");
+          const oldTooltip = item.tooltip;
+          item.tooltip = buildPortsTooltip(takenPorts);
+          if (oldTooltip !== item.tooltip) {
+          }
         } else {
-            item.text = "No active ports";
-            item.tooltip = undefined;
+          item.text = "No active ports";
+          item.tooltip = undefined;
         }
         item.show();
       });
@@ -75,11 +72,9 @@ export async function updatePortsStatusBarItem(
 }
 
 export function getListedPorts(): Array<Number> {
-  let workspaceFolder;
-  if (!vscode.workspace.workspaceFolders) {
+  const workspaceFolder = getMainWorkspace();
+  if (!workspaceFolder) {
     return [];
-  } else {
-    workspaceFolder = vscode.workspace.workspaceFolders[0];
   }
   let stdout = "";
   try {
@@ -102,7 +97,7 @@ export function getListedPorts(): Array<Number> {
   );
 }
 
-function buildPortsTooltip(takenPorts: Array<Number>) {
+function buildPortsTooltip(takenPorts: Array<Number>): vscode.MarkdownString {
   let tooltip = new vscode.MarkdownString();
   tooltip.isTrusted = true;
   tooltip.supportHtml = true;
@@ -115,4 +110,17 @@ function buildPortsTooltip(takenPorts: Array<Number>) {
   });
   tooltip.value += "</div>";
   return tooltip;
+}
+
+export function getMainWorkspace(): vscode.WorkspaceFolder | undefined {
+  if (!vscode.workspace.workspaceFolders) {
+    return undefined;
+  }
+  let bestFolder = vscode.workspace.workspaceFolders[0];
+  for (let folder of vscode.workspace.workspaceFolders) {
+    if (folder.uri.path.length < bestFolder.uri.path.length) {
+      bestFolder = folder;
+    }
+  }
+  return bestFolder;
 }
