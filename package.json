@@ -5,6 +5,7 @@
   "repository": "https://github.com/mindsmiths/mindsmiths-explorer",
   "description": "Mindsmiths plugin for VS Code and Theia.",
   "version": "0.0.1",
+  "icon": "docs/icon.jpeg",
   "publishConfig": {
     "registry": "https://nexus.vingd.net/repository/npm-packages"
   },
