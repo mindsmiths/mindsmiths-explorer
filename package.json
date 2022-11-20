@@ -80,5 +80,10 @@
   },
   "dependencies": {
     "detect-port": "^1.5.1"
-  }
+  },
+  "keywords": [
+    "mindsmiths",
+    "forge",
+    "autocomplete"
+  ]
 }
