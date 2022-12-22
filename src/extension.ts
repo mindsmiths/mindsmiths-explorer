@@ -6,6 +6,7 @@ import {
   getMindsmithsTerminal,
   updatePortsStatusBarItem,
   getListedPorts,
+  readYaml,
 } from "./commons";
 
 const TEXTS = {
@@ -14,6 +15,7 @@ const TEXTS = {
   blockedByForgeRunning: "Can't run command. Forge is currently running.",
 };
 let portsStatusBarItem: vscode.StatusBarItem;
+let projectLocalConfig: Object;
 
 export function activate(context: vscode.ExtensionContext) {
   // Commands
@@ -25,11 +27,11 @@ export function activate(context: vscode.ExtensionContext) {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
         if (created) {
-          setTimeout(() => terminal.sendText("forge run"), 1000);
+          setTimeout(() => terminal.sendText("\nforge run"), 1000);
         } else {
-          terminal.sendText("forge run");
+          terminal.sendText("\nforge run");
         }
-        updatePortsStatusBarItem(portsStatusBarItem);
+        updatePortsStatusBarItem(portsStatusBarItem, projectLocalConfig);
       }
     })
   );
@@ -38,29 +40,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("mindsmiths-explorer.forgeStop", () => {
       if (isForgeRunning()) {
         ps.execSync(
-          "kill $(ps aux | grep -e forge -e target/app -e runserver -e uvicorn | awk '{print $2}') &> /dev/null"
+          "kill $(ps aux | grep -w 'forge run' | awk '{print $2}') &> /dev/null"
         );
-        updatePortsStatusBarItem(portsStatusBarItem);
+        updatePortsStatusBarItem(portsStatusBarItem, projectLocalConfig);
       } else {
         vscode.window.showWarningMessage(TEXTS.forgeNotRunning);
       }
     })
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "mindsmiths-explorer.forgeForceStop",
-      () => {
-        if (isForgeRunning()) {
-          ps.execSync(
-            "kill -9 $(ps aux | grep -e forge -e target/app -e runserver -e uvicorn | awk '{print $2}') &> /dev/null"
-          );
-          updatePortsStatusBarItem(portsStatusBarItem);
-        } else {
-          vscode.window.showWarningMessage(TEXTS.forgeNotRunning);
-        }
-      }
-    )
   );
 
   context.subscriptions.push(
@@ -83,11 +69,11 @@ export function activate(context: vscode.ExtensionContext) {
       } else {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
-		if (created) {
-			setTimeout(() => terminal.sendText("forge init"), 1000);
-		} else {
-			terminal.sendText("forge init");
-		}
+        if (created) {
+          setTimeout(() => terminal.sendText("\nforge init"), 1000);
+        } else {
+          terminal.sendText("\nforge init");
+        }
       }
     })
   );
@@ -99,11 +85,11 @@ export function activate(context: vscode.ExtensionContext) {
       } else {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
-		if (created) {
-			setTimeout(() => terminal.sendText("forge install"), 1000);
-		} else {
-			terminal.sendText("forge install");
-		}
+        if (created) {
+          setTimeout(() => terminal.sendText("\nforge install"), 1000);
+        } else {
+          terminal.sendText("\nforge install");
+        }
       }
     })
   );
@@ -115,22 +101,25 @@ export function activate(context: vscode.ExtensionContext) {
       } else {
         const [terminal, created] = getMindsmithsTerminal();
         terminal.show();
-		if (created) {
-			setTimeout(() => terminal.sendText("forge reset"), 1000);
-		} else {
-			terminal.sendText("forge reset");
-		}
+        if (created) {
+          setTimeout(() => terminal.sendText("\nforge reset"), 1000);
+        } else {
+          terminal.sendText("\nforge reset");
+        }
       }
     })
   );
 
+  // Process `config/local.config.yaml`
+  projectLocalConfig = readYaml("config/local.config.yaml");
+
   // Ports status bar item
-  if (getListedPorts().length > 0) {
+  if (getListedPorts(projectLocalConfig).size > 0) {
     portsStatusBarItem = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right
     );
     portsStatusBarItem.show();
-    updatePortsStatusBarItem(portsStatusBarItem);
+    updatePortsStatusBarItem(portsStatusBarItem, projectLocalConfig);
   }
 }
 

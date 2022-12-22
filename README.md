@@ -18,7 +18,6 @@ work with the platform more efficiently.
   - `Mindsmiths: Run` - runs the project
   - `Mindsmiths: Toggle Run` - toggles the project run state with `F8`
   - `Mindsmiths: Stop` - stops the project gracefully
-  - `Mindsmiths: Force Stop` - forcefully stops the project (avoid using it)
   - `Mindsmiths: Reset` - resets all databases and pulsar
 
 

@@ -4,7 +4,7 @@
   "displayName": "Mindsmiths Explorer",
   "repository": "https://github.com/mindsmiths/mindsmiths-explorer",
   "description": "Mindsmiths plugin for VS Code and Theia.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "icon": "docs/icon.jpeg",
   "publishConfig": {
     "registry": "https://nexus.vingd.net/repository/npm-packages"
@@ -28,10 +28,6 @@
       {
         "command": "mindsmiths-explorer.forgeStop",
         "title": "Mindsmiths: Stop"
-      },
-      {
-        "command": "mindsmiths-explorer.forgeForceStop",
-        "title": "Mindsmiths: Force Stop"
       },
       {
         "command": "mindsmiths-explorer.forgeToggleRun",
@@ -79,7 +75,8 @@
     "@vscode/test-electron": "^2.1.5"
   },
   "dependencies": {
-    "detect-port": "^1.5.1"
+    "detect-port": "^1.5.1",
+    "yaml": "^2.2.0"
   },
   "keywords": [
     "mindsmiths",

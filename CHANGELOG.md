@@ -6,6 +6,18 @@ All notable changes to the "mindsmiths-explorer" extension will be documented in
 ## [Unreleased]
 
 
+## [0.0.2] - 2022-12-23
+
+### Changed
+- Instead of port numbers, the ports widget now displays service names
+
+### Fixed
+- Plugin detects if the platform is already running by checking for `forge run` process instead of a cluster of keywords
+
+### Removed
+- Support for command `Mindsmiths: Force Stop` since `Mindsmiths: Stop` is now able to kill the process tree
+
+
 ## [0.0.1] - 2022-11-18
 
 ### Added
